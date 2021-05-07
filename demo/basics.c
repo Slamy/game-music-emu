@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	/* Open music file in new emulator */
 	Music_Emu* emu;
 	handle_error( gme_open_file( filename, &emu, sample_rate ) );
-	
+
 	/* Start track */
 	handle_error( gme_start_track( emu, track ) );
 	
@@ -35,18 +35,18 @@ int main(int argc, char *argv[])
 		/* Sample buffer */
 		#define buf_size 1024 /* can be any multiple of 2 */
 		short buf [buf_size];
-		
+
 		/* Fill sample buffer */
 		handle_error( gme_play( emu, buf_size, buf ) );
-		
+
 		/* Write samples to wave file */
 		wave_write( buf, buf_size );
 	}
-	
+
 	/* Cleanup */
 	gme_delete( emu );
 	wave_close();
-	
+
 	return 0;
 }
 

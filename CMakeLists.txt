@@ -91,7 +91,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
     # Try to protect against undefined behavior from signed integer overflow
     # This has caused miscompilation of code already and there are other
     # potential uses; see https://bitbucket.org/mpyne/game-music-emu/issues/18/
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fwrapv")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fwrapv -fPIC")
 
     if (USE_GME_SPC)
         list(APPEND CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/cmake")
@@ -102,14 +102,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
         endif()
     endif()
 
-    if (ENABLE_UBSAN)
-        # GCC needs -static-libubsan
-        if (NOT BUILD_SHARED_LIBS AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-            set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -static-libubsan")
-        else()
-            set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
-        endif()
-    endif()
 endif ()
 
 # Shared library defined here
