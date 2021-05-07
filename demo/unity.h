@@ -10,18 +10,25 @@
 
 #include <stdint.h>
 
-const char* NsfOpenFile(const char* path, int sampleRate);
+#ifdef __WIN32
+#define EXPORTFUNC __declspec(dllexport)
+#else
+#define EXPORTFUNC
+#endif
 
-int NsfActivateDebugOut(const char* path);
 
-const char* NsfOpenData(uint8_t* data, int dataLen, int sampleRate);
+EXPORTFUNC const char* NsfOpenFile(const char* path, int sampleRate);
 
-const char* NsfPlayTrack(int index);
+EXPORTFUNC int NsfActivateDebugOut(const char* path);
 
-const char* NsfGetSamples(int numSamples, float* sampleData, int channels);
+EXPORTFUNC const char* NsfOpenData(uint8_t* data, int dataLen, int sampleRate);
 
-void NsfSetVolume(float volume);
+EXPORTFUNC const char* NsfPlayTrack(int index);
 
-void NsfClose();
+EXPORTFUNC const char* NsfGetSamples(int numSamples, float* sampleData, int channels);
+
+EXPORTFUNC void NsfSetVolume(float volume);
+
+EXPORTFUNC void NsfClose();
 
 #endif /* DEMO_UNITY_H_ */

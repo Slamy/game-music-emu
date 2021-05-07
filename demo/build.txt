@@ -1,5 +1,8 @@
-# Building 
+# For Linux
+
+# Building libgme as static
 mkdir build
+cd build
 cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF ..
 make -j16
 
@@ -13,3 +16,19 @@ gcc unitytest.c -L . -l:gmeunity.so
 LD_LIBRARY_PATH=$(pwd) ./a.out test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
 
 
+# For Windows 64 Bit using MinGW on Linux
+
+# Building libgme as static
+mkdir buildMingw
+cd buildMingw
+cmake -DCMAKE_TOOLCHAIN_FILE=../mingw64.toolchain -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF ..
+make -j16
+make install DESTDIR=../win_sdk64
+
+# Build the unity wrapper lib
+x86_64-w64-mingw32-gcc -I ../win_sdk64/usr/local/include/ -L ../win_sdk64/usr/local/lib -fPIC -shared unity.c -o gmeunity.dll -lgme -lstdc++
+
+# Build Test App
+x86_64-w64-mingw32-gcc unitytest.c -L . -l:gmeunity.dll
+
+WINEDLLPATH=$(pwd) wine a.exe test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
