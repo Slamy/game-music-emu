@@ -1,4 +1,4 @@
-# For Linux
+# ------------ For Linux
 
 # Building libgme as static
 mkdir build
@@ -17,7 +17,7 @@ gcc unitytest.c -L . -l:gmeunity.so
 LD_LIBRARY_PATH=$(pwd) ./a.out test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
 
 
-# For Windows 64 Bit using MinGW on Linux (doesnt work. crashes on wine)
+# ------------ For Windows 64 Bit using MinGW on Linux (doesnt work. crashes on wine)
 
 # Building libgme as static
 mkdir buildMingw
@@ -35,7 +35,11 @@ x86_64-w64-mingw32-gcc unitytest.c -L . -l:gmeunity.dll
 WINEDLLPATH=$(pwd) wine a.exe test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
 
 
-# For MinGW on Windows
+# ------------ For MinGW64 on Windows
+
+Start MSYS2 MinGW 64-bit
+
+# Building libgme as static
 mkdir build
 cd build
 MSYS2_ARG_CONV_EXCL=- cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$MSYSTEM_PREFIX ..
@@ -46,10 +50,37 @@ make install DESTDIR=/
 # Build the unity wrapper lib
 gcc -fPIC -shared unity.c -o gmeunity.dll -lgme -lstdc++
 
-# Build Test App
+# Build test App
 gcc unitytest.c -L . -l:gmeunity.dll
 
 # Execute test app
 ./a.exe test.nsf
 
-# Open with Audacity as Raw file. Select Float32, 2 Channels, Little Endian
+# Open test.raw with Audacity as Raw file. Select 32-bit float, 2 Channels, Little Endian
+
+
+# ------------ With MinGW64 again for 32 bit
+
+Start MSYS2 MinGW 32-bit
+mkdir build
+cd build
+# Dependencies
+pacman -S mingw32/mingw-w64-i686-cmake
+pacman -S mingw32/mingw-w64-i686-gcc
+
+# Building libgme as static
+
+MSYS2_ARG_CONV_EXCL=- cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$MSYSTEM_PREFIX ..
+make -j16
+make install DESTDIR=/
+
+# Build the unity wrapper lib
+gcc -fPIC -shared unity.c -o gmeunity.dll -lgme -lstdc++
+
+# Build test App
+gcc unitytest.c -L . -l:gmeunity.dll
+
+# Execute test app
+./a.exe test.nsf
+
+# Open test.raw with Audacity as Raw file. Select 32-bit float, 2 Channels, Little Endian
