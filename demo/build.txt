@@ -5,6 +5,7 @@ mkdir build
 cd build
 cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF ..
 make -j16
+make install
 
 # Build the unity wrapper lib
 gcc -fPIC -shared unity.c -o gmeunity.so -lgme -lstdc++
@@ -16,7 +17,7 @@ gcc unitytest.c -L . -l:gmeunity.so
 LD_LIBRARY_PATH=$(pwd) ./a.out test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
 
 
-# For Windows 64 Bit using MinGW on Linux
+# For Windows 64 Bit using MinGW on Linux (doesnt work. crashes on wine)
 
 # Building libgme as static
 mkdir buildMingw
@@ -32,3 +33,23 @@ x86_64-w64-mingw32-gcc -I ../win_sdk64/usr/local/include/ -L ../win_sdk64/usr/lo
 x86_64-w64-mingw32-gcc unitytest.c -L . -l:gmeunity.dll
 
 WINEDLLPATH=$(pwd) wine a.exe test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
+
+
+# For MinGW on Windows
+mkdir build
+cd build
+MSYS2_ARG_CONV_EXCL=- cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$MSYSTEM_PREFIX ..
+make -j16
+make install DESTDIR=/
+
+
+# Build the unity wrapper lib
+gcc -fPIC -shared unity.c -o gmeunity.dll -lgme -lstdc++
+
+# Build Test App
+gcc unitytest.c -L . -l:gmeunity.dll
+
+# Execute test app
+./a.exe test.nsf
+
+# Open with Audacity as Raw file. Select Float32, 2 Channels, Little Endian

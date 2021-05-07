@@ -49,14 +49,18 @@ int main(int argc, char *argv[])
 	err = NsfPlayTrack(track);
 	assert(!err);
 
-	for(;;)
+	FILE* out = fopen("test.raw","wb");
+
+	for(int i=0; i < 1000; i++)
 	{
 		float samples[1024];
 
 		err = NsfGetSamples(1024, samples,1);
 		assert(!err);
-		fwrite(samples,1,1024*4,stdout);
+		fwrite(samples,1,1024*4,out);
 	}
+
+	fclose(out);
 
 	return 0;
 }
