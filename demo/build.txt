@@ -1,0 +1,15 @@
+# Building 
+mkdir build
+cmake -DBUILD_SHARED_LIBS=OFF ENABLE_UBSAN=OFF ..
+make -j16
+
+# Build the unity wrapper lib
+gcc -fPIC -shared unity.c -o gmeunity.so -lgme -lstdc++
+
+# Build Test App
+gcc unitytest.c -L . -l:gmeunity.so
+
+# Execute test app
+LD_LIBRARY_PATH=$(pwd) ./a.out test.nsf  | aplay -c 2 -f FLOAT_LE -r 44100
+
+
