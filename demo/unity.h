@@ -16,7 +16,6 @@
 #define EXPORTFUNC
 #endif
 
-
 EXPORTFUNC const char* NsfOpenFile(const char* path, int sampleRate);
 
 EXPORTFUNC int NsfActivateDebugOut(const char* path);
@@ -30,5 +29,17 @@ EXPORTFUNC const char* NsfGetSamples(int numSamples, float* sampleData, int chan
 EXPORTFUNC void NsfSetVolume(float volume);
 
 EXPORTFUNC void NsfClose();
+
+EXPORTFUNC void NsfMuteVoices(int muting_mask);
+
+// double treble; /* -50.0 = muffled, 0 = flat, +5.0 = extra-crisp */
+// double bass;   /* 1 = full bass, 90 = average, 16000 = almost no bass */
+
+EXPORTFUNC void NsfSetEqualizer(double treble, double bass);
+
+EXPORTFUNC double NsfGetEqualizerTreble();
+
+EXPORTFUNC double NsfGetEqualizerBass();
+
 
 #endif /* DEMO_UNITY_H_ */

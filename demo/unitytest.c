@@ -46,21 +46,35 @@ int main(int argc, char *argv[])
 	assert(!err);
 #endif
 
+	fprintf(stderr, "bass=%f, treble=%f\n",NsfGetEqualizerBass(), NsfGetEqualizerTreble());
+
 	err = NsfPlayTrack(track);
 	assert(!err);
 
-	FILE* out = fopen("test.raw","wb");
+	fprintf(stderr, "bass=%f, treble=%f\n",NsfGetEqualizerBass(), NsfGetEqualizerTreble());
 
-	for(int i=0; i < 1000; i++)
+	// double treble; /* -50.0 = muffled, 0 = flat, +5.0 = extra-crisp */
+	// double bass;   /* 1 = full bass, 90 = average, 16000 = almost no bass */
+
+	double treble = NsfGetEqualizerTreble();
+	double bass = NsfGetEqualizerBass();
+
+	for(;;)
 	{
 		float samples[1024];
 
 		err = NsfGetSamples(1024, samples,1);
-		assert(!err);
-		fwrite(samples,1,1024*4,out);
-	}
+		if (err)
+			puts(err);
 
-	fclose(out);
+		assert(!err);
+		fwrite(samples,1,1024*4,stdout);
+
+		//treble-=0.2;
+		//bass+=10;
+		NsfSetEqualizer(treble, bass);
+
+	}
 
 	return 0;
 }
