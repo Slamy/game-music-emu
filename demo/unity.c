@@ -22,7 +22,7 @@ static float volume = 1.0f;
 static short rawSampleData[4096];
 static FILE* debugOut=NULL;
 
-static gme_equalizer_t gme_equalizer_state;
+static gme_equalizer_t gme_equalizer_state={0};
 
 const char* NsfOpenFile(const char* path, int sampleRate)
 {
@@ -88,30 +88,35 @@ void NsfClose() {
 			debugOut=NULL;
 		}
 		gme_delete(emu);
+		emu = NULL;
 	}
 }
 
 void NsfMuteVoices(int muting_mask)
 {
-	gme_mute_voices(emu, muting_mask);
+	if (emu)
+		gme_mute_voices(emu, muting_mask);
 }
 
 void NsfSetEqualizer(double treble, double bass)
 {
 	gme_equalizer_state.bass=bass;
 	gme_equalizer_state.treble=treble;
-	gme_set_equalizer(emu,&gme_equalizer_state);
+	if (emu)
+		gme_set_equalizer(emu,&gme_equalizer_state);
 }
 
 double NsfGetEqualizerTreble()
 {
-	gme_equalizer(emu,&gme_equalizer_state);
+	if (emu)
+		gme_equalizer(emu,&gme_equalizer_state);
 	return gme_equalizer_state.treble;
 }
 
 double NsfGetEqualizerBass()
 {
-	gme_equalizer(emu,&gme_equalizer_state);
+	if (emu)
+		gme_equalizer(emu,&gme_equalizer_state);
 	return gme_equalizer_state.bass;
 }
 
