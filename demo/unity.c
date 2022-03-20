@@ -98,6 +98,12 @@ void NsfMuteVoices(int muting_mask)
 		gme_mute_voices(emu, muting_mask);
 }
 
+void NsfSetTempo(double tempo)
+{
+	if (emu)
+		gme_set_tempo(emu, tempo);
+}
+
 void NsfSetEqualizer(double treble, double bass)
 {
 	gme_equalizer_state.bass=bass;

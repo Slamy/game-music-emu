@@ -58,7 +58,8 @@ int main(int argc, char *argv[])
 
 	double treble = NsfGetEqualizerTreble();
 	double bass = NsfGetEqualizerBass();
-
+	NsfSetVolume(0.4);
+	NsfSetTempo(3.5);
 	for(;;)
 	{
 		float samples[1024];

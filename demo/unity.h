@@ -32,9 +32,11 @@ EXPORTFUNC void NsfClose();
 
 EXPORTFUNC void NsfMuteVoices(int muting_mask);
 
+// Set tempo, where 0.5 = half speed, 1.0 = normal, 2.0 = double speed
+EXPORTFUNC void NsfSetTempo(double tempo);
+
 // double treble; /* -50.0 = muffled, 0 = flat, +5.0 = extra-crisp */
 // double bass;   /* 1 = full bass, 90 = average, 16000 = almost no bass */
-
 EXPORTFUNC void NsfSetEqualizer(double treble, double bass);
 
 EXPORTFUNC double NsfGetEqualizerTreble();
