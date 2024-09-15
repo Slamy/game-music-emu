@@ -8,7 +8,7 @@ make -j16
 make install
 
 # Build the unity wrapper lib
-gcc -fPIC -shared unity.c -o gmeunity.so -lgme -lstdc++
+gcc -Wall -fPIC -shared unity.c -o gmeunity.so -lgme -lstdc++
 
 # Build Test App
 gcc unitytest.c -L . -l:gmeunity.so
