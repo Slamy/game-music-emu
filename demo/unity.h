@@ -43,5 +43,12 @@ EXPORTFUNC double NsfGetEqualizerTreble();
 
 EXPORTFUNC double NsfGetEqualizerBass();
 
+EXPORTFUNC int NsfGetCurrentSamplePosition();
+
+EXPORTFUNC void NsfSeekSamplePosition(int samples);
+
+EXPORTFUNC int NsfGetCurrentTimePosition();
+
+EXPORTFUNC void NsfSeekTimePosition(int milliseconds);
 
 #endif /* DEMO_UNITY_H_ */
